@@ -6,16 +6,15 @@ interface GiveAwayCardProps {
   item: GiveAwayModel;
 }
 
-const ItemGiveAwayCard: React.FC<GiveAwayCardProps> = ({ item }) => {
+const GiveAwayCard: React.FC<GiveAwayCardProps> = ({ item }) => {
   return (
     <section className='p-4 border-2 rounded-sm'>
       <Link href={`/giveaway/item/${item.id}`} className='flex justify-between'>
         <div>
-          {item.name? <h2 className='font-bold text-2xl'>{item.name} Giveaway by {item.user.email}</h2>:''}
+          {item.item_name? <h2 className='font-bold text-2xl'>{item.item_name} Giveaway by {item.user?.email}</h2>:''}
           {item.amount?<h2>#{item?.amount} Giveaway by {item.user.email}</h2>:''}
           <p>{item.description}</p>
-          <p>Number of participant: {item.participant.length} </p>
-          <p>sponsored by: {item.user.email}</p>    
+          <p>Number of participant: {item.participant.length} </p> 
         </div>
 
         <button className='p-4 border text-white font-semibold bg-green-700 rounded-md'>Join Giveaway</button>
@@ -25,4 +24,4 @@ const ItemGiveAwayCard: React.FC<GiveAwayCardProps> = ({ item }) => {
   );
 };
 
-export default ItemGiveAwayCard;
+export default GiveAwayCard;

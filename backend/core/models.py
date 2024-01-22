@@ -1,7 +1,9 @@
 # giveaway_app/models.py
 import uuid
 from django.db import models
+from django_extensions.db.fields import AutoSlugField
 from django.contrib.auth import get_user_model
+
 
 User = get_user_model()
 
@@ -30,6 +32,7 @@ class Giveaway(models.Model):
     status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = AutoSlugField(populate_from=['title', 'description'])
 
     def __str__(self):
         return self.title

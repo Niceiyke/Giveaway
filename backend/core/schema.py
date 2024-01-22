@@ -1,3 +1,6 @@
+
+from datetime import datetime
+from uuid import UUID
 from ninja import ModelSchema, Schema
 from .models import Category
 from account.models import CustomUser
@@ -13,13 +16,24 @@ class CategorySchema(ModelSchema):
 
 
 class GiveAwaySchema(Schema):
-    id: str
-    item_name: str
-    amount: float
+    id: UUID
+    title:str
+    item_name: str|None
+    amount: float|None
     description: str
-    category: str
+    category: CategorySchema|None
     is_cash: bool
-    status: str
-    created_at: str
+    status: bool
+    created_at: datetime
     owner: CustomUserSchema
-    participant: List[CustomUserSchema]
+    participant: List[CustomUserSchema]=None
+    slug:str
+
+class CreateGiveAwaySchema(Schema):
+    title:str
+    item_name: str|None
+    amount: float|None
+    description: str
+    category:str|None=None
+    is_cash: bool
+    owner:str

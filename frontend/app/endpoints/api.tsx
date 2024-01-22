@@ -1,19 +1,9 @@
 
 const BASEURL ='http://127.0.0.1:8000/api/'
 
-export const getItemGiveAways =async()=>{
+export const getGiveAways =async()=>{
 
-    const res =await fetch(`${BASEURL}core/item-giveaway`,{cache:'no-store'})
-
-    if (res.status ===200){
-        return res.json()
-    }
-
-}
-
-export const getItemDetail =async(id:string)=>{
-
-    const res =await fetch(`${BASEURL}core/item-giveaway/${id}`,{cache:'no-store'})
+    const res =await fetch(`${BASEURL}core/giveaways`,{cache:'no-store'})
 
     if (res.status ===200){
         return res.json()
@@ -21,20 +11,9 @@ export const getItemDetail =async(id:string)=>{
 
 }
 
-export const getCashGiveAways =async()=>{
+export const getGiveAwayDetail =async(id:string)=>{
 
-    const res =await fetch(`${BASEURL}core/cash-giveaway`,{cache:'no-store'})
-
-    if (res.status ===200){
-        return res.json()
-    }
-
-}
-
-
-export const getCashDetail =async(id:string)=>{
-
-    const res =await fetch(`${BASEURL}core/cash-giveaway/${id}`,{cache:'no-store'})
+    const res =await fetch(`${BASEURL}core/giveaway/${id}`,{cache:'no-store'})
 
     if (res.status ===200){
         return res.json()

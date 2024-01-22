@@ -1,4 +1,4 @@
-import ListItemGiveAway from '@/app/components/ListItemGiveAways'
+import ListItemGiveAway from '@/app/components/ListGiveAways'
 
 export default function Home() {
   return (

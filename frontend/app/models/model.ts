@@ -13,13 +13,15 @@ interface GiveAwayParticipant {
 }
 
 interface GiveAwayModel {
-  user: User;
-  participant: GiveAwayParticipant[];
   id: string;
+  title:string;
   description: string;
   status: boolean;
+  is_cash:boolean;
   created_at: string; 
-  name?: string;
+  user: User;
+  participant: GiveAwayParticipant[];
+  item_name?: string;
   amount?: string;
   category?: string;
 
