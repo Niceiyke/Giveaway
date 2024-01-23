@@ -1,9 +1,8 @@
-from uuid import UUID
+import os
+from dotenv import load_dotenv
 from ninja import Router
-from django.shortcuts import get_object_or_404
-
-from itertools import chain
-
+from ninja.security import HttpBearer
+from ninja.errors import AuthenticationError
 from account.models import CustomUser
 from .models import Category, Giveaway
 from .schema import (
@@ -12,20 +11,40 @@ from .schema import (
     CreateGiveAwaySchema,
     JoinGiveAwaySchema,
 )
+import jwt
+import datetime
+
 
 
 router = Router()
+
+class AuthBearer(HttpBearer):
+    def authenticate(self, request, token):
+       load_dotenv()
+       key =os.getenv("SECRET_KEY")
+       if not token:
+        raise AuthenticationError()
+       try:
+       
+        data =jwt.decode(token,key,algorithms=['HS256'])
+        converted_time= datetime.datetime.utcfromtimestamp(data['exp'])
+        current_time= datetime.datetime.utcnow()
+
+        if(converted_time>current_time):
+            return True
+        
+       except jwt.ExpiredSignatureError:
+        return False
+       
 
 
 @router.get("/category", response=list[CategorySchema])
 def get_category(request):
     qs = Category.objects.all()
     print(qs)
-
     return qs
 
-
-@router.get("/giveaways", response=list[GiveAwaySchema])
+@router.get("/giveaways",auth=AuthBearer(), response=list[GiveAwaySchema])
 def list_giveaway(request):
     return Giveaway.objects.all()
 
@@ -35,7 +54,7 @@ def get_giveaway(request, slug: str):
     return Giveaway.objects.filter(slug=slug).first()
 
 
-@router.post("/create-giveaway", response=GiveAwaySchema)
+@router.post("/create-giveaway", auth=AuthBearer(), response=GiveAwaySchema)
 def create_giveaway(request, giveaway: CreateGiveAwaySchema):
     giveaway_data = giveaway.model_dump()
 
@@ -67,7 +86,7 @@ def create_giveaway(request, giveaway: CreateGiveAwaySchema):
     return giveaway_model
 
 
-@router.post("/join-giveaway/{slug}")
+@router.post("/join-giveaway/{slug}", auth=AuthBearer())
 def join_giveaway(request, data: JoinGiveAwaySchema):
     giveaway_qs = Giveaway.objects.filter(slug=data.slug).first().participant
     user = CustomUser.objects.filter(id=data.id).first()

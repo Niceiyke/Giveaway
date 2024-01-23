@@ -3,7 +3,7 @@ from uuid import UUID
 from ninja import ModelSchema, Schema
 from .models import Category
 from account.models import CustomUser
-from account.schema import CustomUserSchema
+from account.schema import UserSchema
 
 from typing import List
 
@@ -24,8 +24,8 @@ class GiveAwaySchema(Schema):
     is_cash: bool
     status: bool
     created_at: datetime
-    owner: CustomUserSchema
-    participant: List[CustomUserSchema] = None
+    owner: UserSchema
+    participant: List[UserSchema] = None
     slug: str
 
 
