@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from uuid import UUID
 from ninja import ModelSchema, Schema
@@ -17,23 +16,29 @@ class CategorySchema(ModelSchema):
 
 class GiveAwaySchema(Schema):
     id: UUID
-    title:str
-    item_name: str|None
-    amount: float|None
+    title: str
+    item_name: str | None
+    amount: float | None
     description: str
-    category: CategorySchema|None
+    category: CategorySchema | None
     is_cash: bool
     status: bool
     created_at: datetime
     owner: CustomUserSchema
-    participant: List[CustomUserSchema]=None
-    slug:str
+    participant: List[CustomUserSchema] = None
+    slug: str
+
 
 class CreateGiveAwaySchema(Schema):
-    title:str
-    item_name: str|None
-    amount: float|None
+    title: str
+    item_name: str | None
+    amount: float | None
     description: str
-    category:str|None=None
+    category: str | None = None
     is_cash: bool
-    owner:str
+    owner: str
+
+
+class JoinGiveAwaySchema(Schema):
+    slug: str
+    id: str

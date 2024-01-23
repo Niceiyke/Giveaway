@@ -19,8 +19,9 @@ interface GiveAwayModel {
   status: boolean;
   is_cash:boolean;
   created_at: string; 
-  user: User;
+  owner: User;
   participant: GiveAwayParticipant[];
+  slug:string;
   item_name?: string;
   amount?: string;
   category?: string;

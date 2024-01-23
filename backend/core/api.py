@@ -6,10 +6,16 @@ from itertools import chain
 
 from account.models import CustomUser
 from .models import Category, Giveaway
-from .schema import GiveAwaySchema,CategorySchema,CreateGiveAwaySchema
+from .schema import (
+    GiveAwaySchema,
+    CategorySchema,
+    CreateGiveAwaySchema,
+    JoinGiveAwaySchema,
+)
 
 
 router = Router()
+
 
 @router.get("/category", response=list[CategorySchema])
 def get_category(request):
@@ -21,37 +27,50 @@ def get_category(request):
 
 @router.get("/giveaways", response=list[GiveAwaySchema])
 def list_giveaway(request):
-    return  Giveaway.objects.all()
+    return Giveaway.objects.all()
 
 
-@router.get("/giveaway/{id}", response=GiveAwaySchema)
-def get_giveaway(request,id:UUID):
-    return Giveaway.objects.filter(id=id).first()
+@router.get("/giveaway/{slug}", response=GiveAwaySchema)
+def get_giveaway(request, slug: str):
+    return Giveaway.objects.filter(slug=slug).first()
 
 
-@router.post("/create-giveaway",response=GiveAwaySchema)
-def create_giveaway(request,giveaway:CreateGiveAwaySchema):
-    giveaway_data=giveaway.model_dump()
+@router.post("/create-giveaway", response=GiveAwaySchema)
+def create_giveaway(request, giveaway: CreateGiveAwaySchema):
+    giveaway_data = giveaway.model_dump()
 
     title = giveaway_data["title"]
-    item_name =giveaway_data["item_name"]
+    item_name = giveaway_data["item_name"]
     amount = giveaway_data["amount"]
-    description=giveaway_data["description"]
-    category_id=giveaway_data["category"]
-    is_cash=giveaway_data["is_cash"]
-    owner_id=giveaway_data["owner"]
+    description = giveaway_data["description"]
+    category_id = giveaway_data["category"]
+    is_cash = giveaway_data["is_cash"]
+    owner_id = giveaway_data["owner"]
 
-    owner=CustomUser.objects.filter(id=owner_id).first()
+    owner = CustomUser.objects.filter(id=owner_id).first()
 
     if not is_cash:
-        category=Category.objects.filter(id=category_id).first()
-        giveaway_model=Giveaway.objects.create(category=category,item_name=item_name,owner=owner,description=description,status=True,title=title)
+        category = Category.objects.filter(id=category_id).first()
+        giveaway_model = Giveaway.objects.create(
+            category=category,
+            item_name=item_name,
+            owner=owner,
+            description=description,
+            status=True,
+            title=title,
+        )
         return giveaway_model
-    
-    giveaway_model=Giveaway.objects.create(amount=amount,owner=owner,description=description,status=True,title=title)
+
+    giveaway_model = Giveaway.objects.create(
+        amount=amount, owner=owner, description=description, status=True, title=title
+    )
     return giveaway_model
-    
 
-    
 
-    
+@router.post("/join-giveaway/{slug}")
+def join_giveaway(request, data: JoinGiveAwaySchema):
+    giveaway_qs = Giveaway.objects.filter(slug=data.slug).first().participant
+    user = CustomUser.objects.filter(id=data.id).first()
+    giveaway_qs.add(user)
+
+    return {"status": "success"}

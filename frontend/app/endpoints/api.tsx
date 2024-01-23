@@ -11,9 +11,9 @@ export const getGiveAways =async()=>{
 
 }
 
-export const getGiveAwayDetail =async(id:string)=>{
+export const getGiveAwayDetail =async(slug:string)=>{
 
-    const res =await fetch(`${BASEURL}core/giveaway/${id}`,{cache:'no-store'})
+    const res =await fetch(`${BASEURL}core/giveaway/${slug}`,{cache:'no-store'})
 
     if (res.status ===200){
         return res.json()

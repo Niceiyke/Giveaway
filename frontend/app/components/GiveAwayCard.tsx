@@ -9,10 +9,10 @@ interface GiveAwayCardProps {
 const GiveAwayCard: React.FC<GiveAwayCardProps> = ({ item }) => {
   return (
     <section className='p-4 border-2 rounded-sm'>
-      <Link href={`/giveaway/item/${item.id}`} className='flex justify-between'>
+      <Link href={`/giveaway/${item.slug}`} className='flex justify-between'>
         <div>
-          {item.item_name? <h2 className='font-bold text-2xl'>{item.item_name} Giveaway by {item.user?.email}</h2>:''}
-          {item.amount?<h2>#{item?.amount} Giveaway by {item.user.email}</h2>:''}
+          {item.item_name? <h2 className='font-bold text-2xl'>{item.item_name} Giveaway by {item.owner?.email}</h2>:''}
+          {item.amount?<h2 className='font-bold text-2xl'>#{item?.amount} Giveaway by {item.owner?.email}</h2>:''}
           <p>{item.description}</p>
           <p>Number of participant: {item.participant.length} </p> 
         </div>
