@@ -1,5 +1,6 @@
 // components/Header.js
 
+import Link from 'next/link';
 import React from 'react';
 
 const Header = () => {
@@ -15,9 +16,11 @@ const Header = () => {
           <span className="text-lg font-bold">GiveAWay</span>
         </div>
         <nav className="space-x-4">
-          <a href="#" className="hover:text-gray-300">Home</a>
+          <Link href="#" className="hover:text-gray-300">Home</Link>
           <a href="#" className="hover:text-gray-300">About</a>
           <a href="#" className="hover:text-gray-300">Services</a>
+          <a href="/auth/login" className="hover:text-gray-300">Login</a>
+          <a href="/auth/register" className="hover:text-gray-300">Register</a>
           <a href="#" className="hover:text-gray-300">Contact</a>
         </nav>
       </div>

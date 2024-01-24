@@ -6,7 +6,7 @@ import { getGiveAways } from '../endpoints/api';
 
 const ListGiveAways: React.FC = async () => {
   const data = await getGiveAways()
-  console.log(data)
+
   return (
     <div>
       {data?.map((item:GiveAwayModel) => (

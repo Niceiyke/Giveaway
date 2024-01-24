@@ -3,7 +3,7 @@ const BASEURL ='http://127.0.0.1:8000/api'
 
 export const getGiveAways =async()=>{
 
-    const res =await fetch(`${BASEURL}/core/giveaways`,{cache:'no-store'})
+    const res =await fetch(`${BASEURL}/core/giveaways`,{next:{revalidate:5000}})
 
     if (res.status ===200){
         return res.json()
