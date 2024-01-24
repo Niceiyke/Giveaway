@@ -15,27 +15,25 @@ import jwt
 import datetime
 
 
-
 router = Router()
+
 
 class AuthBearer(HttpBearer):
     def authenticate(self, request, token):
-       load_dotenv()
-       key =os.getenv("SECRET_KEY")
-       if not token:
-        raise AuthenticationError()
-       try:
-       
-        data =jwt.decode(token,key,algorithms=['HS256'])
-        converted_time= datetime.datetime.utcfromtimestamp(data['exp'])
-        current_time= datetime.datetime.utcnow()
+        load_dotenv()
+        key = os.getenv("SECRET_KEY")
+        if not token:
+            raise AuthenticationError()
+        try:
+            data = jwt.decode(token, key, algorithms=["HS256"])
+            converted_time = datetime.datetime.utcfromtimestamp(data["exp"])
+            current_time = datetime.datetime.utcnow()
 
-        if(converted_time>current_time):
-            return True
-        
-       except jwt.ExpiredSignatureError:
-        return False
-       
+            if converted_time > current_time:
+                return True
+
+        except jwt.ExpiredSignatureError:
+            return False
 
 
 @router.get("/category", response=list[CategorySchema])
@@ -44,7 +42,8 @@ def get_category(request):
     print(qs)
     return qs
 
-@router.get("/giveaways",auth=AuthBearer(), response=list[GiveAwaySchema])
+
+@router.get("/giveaways", response=list[GiveAwaySchema])
 def list_giveaway(request):
     return Giveaway.objects.all()
 
